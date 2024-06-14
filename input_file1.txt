@@ -1,0 +1,3 @@
+1234:Jozef:Miloslav:Hurban:Legal
+4567:Milan:Rastislav:Stefanik:Defence
+4563:Jozef::Murgas:Development
