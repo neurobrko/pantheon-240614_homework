@@ -47,14 +47,14 @@ for file in args.inputFiles:
     file.close()
 
 # create dataframe populated with input_data
-column_names = ["ID", "Name", "Middle Name", "Surname", "Department"]
+column_names = ["ID", "Forename", "Middle Name", "Surname", "Department"]
 input_df = pd.DataFrame(input_data, columns=column_names)
 
 # create Username column
 input_df.insert(
     1,
     "Username",
-    input_df["Name"].apply(lambda s: s[0].lower())
+    input_df["Forename"].apply(lambda s: s[0].lower())
     + input_df["Middle Name"].apply(lambda s: s[0].lower() if len(s) > 0 else "")
     + input_df["Surname"].apply(lambda s: s.lower()),
 )
