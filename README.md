@@ -35,3 +35,7 @@ Processes all input files and writes the generated data to output file:\
 python3 ugen.py –o [output file] [input file]...\
 It is possible to use also long options, i.e. –-help and --output.\
 The help is also displayed if an incorrect input is provided.
+
+### Part B – Unit tests
+Create unit tests for the program from the Part A. It is necessary to achieve 100% coverage of relevant code.
+The output is an automatically generated report.
