@@ -1,0 +1,40 @@
+PDF
+H1
+TEST REPORT - ugen.py
+P
+ugen.py is a script for generating usernames from user data provided in input files.
+Input files must be named input_file1.txt, input_file2.txt, ... input_fileN.txt encoded in utf-8.
+Format of the data is ID, Forename, Middle Name (optional), Surname, Department separated by colon.
+
+Example line:
+CLI
+1234:Jozef:Miloslav:Hurban:Legal
+P
+
+Script is validating input data. If ID is not an integer, if Forename or Surname is missing, it will skip the line and report after running.
+If Department is missing, script will process the line, but also report it after running.
+
+To run the script you have to provide output file using -o or --output flag and input file(s) using positional arguments.
+
+Example command:
+CLI
+python3 ugen.py -o output_file.txt input_file1.txt input_file2.txt input_file3.txt
+P
+
+Running script with -h or --help flag will display help.
+If required arguments are missing or incorrect (wrong filepath, missing input file...) it will display error and help and exit.
+
+H2
+EXAMPLE 1: Running script without arguments
+P
+Command:
+CLI
+python3 ugen.py
+
+CMD
+python3 ugen.py
+PDF
+P
+Output:
+CLI
+OUTPUT

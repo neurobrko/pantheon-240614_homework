@@ -125,6 +125,30 @@ def generate_username(input_df):
     return input_df
 
 
+# Create argument parser
+ap = CustomArgumentParser(
+    prog="ugen.py",
+    description="Generate list of usernames in single output file based on user info from multiple input files.",
+)
+ap.add_argument(
+    "inputFiles",
+    help="filename(s) of user info file(s)",
+    metavar="FILEPATH",
+    nargs="+",
+    type=argparse.FileType("r"),
+)
+ap.add_argument(
+    "-o",
+    "--output",
+    help="Specify the name of the output file.",
+    metavar="PATH",
+    type=argparse.FileType("w"),
+)
+
+# retrieve arguments
+args = ap.parse_args()
+
+
 def main() -> None:
     # DEFINE VARIABLES
     # list for input data
@@ -134,29 +158,6 @@ def main() -> None:
     # create vars for processed lines and skipped lines
     processed_lines = 0
     skipped_lines = 0
-
-    # Create argument parser
-    ap = CustomArgumentParser(
-        prog="ugen.py",
-        description="Generate list of usernames in single output file based on user info from multiple input files.",
-    )
-    ap.add_argument(
-        "inputFiles",
-        help="filename(s) of user info file(s)",
-        metavar="FILEPATH",
-        nargs="+",
-        type=argparse.FileType("r"),
-    )
-    ap.add_argument(
-        "-o",
-        "--output",
-        help="Specify the name of the output file.",
-        metavar="PATH",
-        type=argparse.FileType("w"),
-    )
-
-    # retrieve arguments
-    args = ap.parse_args()
 
     # load input files into list of lists
     for file in args.inputFiles:
