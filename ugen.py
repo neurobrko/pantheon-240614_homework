@@ -116,6 +116,7 @@ input_df.insert(
 )
 # strip Username to 8 characters
 input_df["Username"] = input_df["Username"].apply(lambda s: s[:8])
+
 # check for duplicate usernames and add number to them
 
 
@@ -154,5 +155,5 @@ if skipped_lines == 0:
 else:
     print(f"{FormatCli.RED}{FormatCli.BOLD}{skipped_lines} lines skipped.{FormatCli.END}")
 if wrong_format:
-    print(f"\n{FormatCli.RED}{FormatCli.BOLD}Errors and warnings:{FormatCli.END}")
+    print(f"\n{FormatCli.RED}{FormatCli.BOLD}ERRORS AND WARNINGS:{FormatCli.END}")
     print(*wrong_format, sep="\n")
