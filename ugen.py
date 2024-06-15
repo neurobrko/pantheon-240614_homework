@@ -183,7 +183,7 @@ def main() -> None:
     input_df = generate_username(input_df)
 
     # write input_df to output.txt
-    input_df.to_csv("output_file.txt", header=False, index=False, sep=":")
+    input_df.to_csv(args.output, header=False, index=False, sep=":")
 
     # print report
     print(
