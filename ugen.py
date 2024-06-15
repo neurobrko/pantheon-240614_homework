@@ -77,7 +77,64 @@ def validate_line(line, i, filename, wrong_format, skipped_lines):
     return [valid_line, i, wrong_format, skipped_lines]
 
 
+# function to create pandas dataframe
+def create_dataframe(input_data):
+    column_names = ["ID", "Forename", "Middle Name", "Surname", "Department"]
+    input_df = pd.DataFrame(input_data, columns=column_names)
+    return input_df
+
+
+# custom function to add a number at the end of duplicate username
+def add_number(username, counts):
+    if username in counts:
+        counts[username] += 1
+        return f"{username}{counts[username]}"
+    else:
+        counts[username] = 0
+        return username
+
+
+def generate_username(input_df):
+    # create Username column
+    input_df.insert(
+        1,
+        "Username",
+        input_df["Forename"].apply(lambda s: s[0].lower())
+        + input_df["Middle Name"].apply(lambda s: s[0].lower() if len(s) > 0 else "")
+        + input_df["Surname"].apply(lambda s: s.lower()),
+    )
+    # strip Username to 8 characters
+    input_df["Username"] = input_df["Username"].apply(lambda s: s[:8])
+
+    # CHECK FOR DUPLICATE USERNAMES AND ADD NUMBER TO THEM
+    # empty dict for counts for each username
+    username_counts = {}
+
+    # find duplicates and apply the custom function
+    input_df["is_duplicate"] = input_df.duplicated(subset="Username", keep=False)
+    input_df["Username"] = input_df.apply(
+        lambda x: (
+            add_number(x["Username"], username_counts)
+            if x["is_duplicate"]
+            else x["Username"]
+        ),
+        axis=1,
+    )
+    input_df.drop("is_duplicate", axis=1, inplace=True)
+
+    return input_df
+
+
 def main() -> None:
+    # DEFINE VARIABLES
+    # list for input data
+    input_data = []
+    # list for wrong formatted lines log
+    wrong_format = []
+    # create vars for processed lines and skipped lines
+    processed_lines = 0
+    skipped_lines = 0
+
     # Create argument parser
     ap = CustomArgumentParser(
         prog="ugen.py",
@@ -101,14 +158,6 @@ def main() -> None:
     # retrieve arguments
     args = ap.parse_args()
 
-    # create list for input data
-    input_data = []
-    # create list for wrong formatted lines
-    wrong_format = []
-    # create vars for processed lines and skipped lines
-    processed_lines = 0
-    skipped_lines = 0
-
     # load input files into list of lists
     for file in args.inputFiles:
         i = 1
@@ -128,47 +177,12 @@ def main() -> None:
         file.close()
 
     # create dataframe populated with input_data
-    column_names = ["ID", "Forename", "Middle Name", "Surname", "Department"]
-    input_df = pd.DataFrame(input_data, columns=column_names)
+    input_df = create_dataframe(input_data)
 
-    # create Username column
-    input_df.insert(
-        1,
-        "Username",
-        input_df["Forename"].apply(lambda s: s[0].lower())
-        + input_df["Middle Name"].apply(lambda s: s[0].lower() if len(s) > 0 else "")
-        + input_df["Surname"].apply(lambda s: s.lower()),
-    )
-    # strip Username to 8 characters
-    input_df["Username"] = input_df["Username"].apply(lambda s: s[:8])
+    # generate username from existing columns
+    input_df = generate_username(input_df)
 
-    # check for duplicate usernames and add number to them
-
-    # custom function to add a number at the end of username
-    def add_number(username, counts):
-        if username in counts:
-            counts[username] += 1
-            return f"{username}{counts[username]}"
-        else:
-            counts[username] = 0
-            return username
-
-    # empty dict for counts for each username
-    username_counts = {}
-
-    # find duplicates and apply the custom function
-    input_df["is_duplicate"] = input_df.duplicated(subset="Username", keep=False)
-    input_df["Username"] = input_df.apply(
-        lambda x: (
-            add_number(x["Username"], username_counts)
-            if x["is_duplicate"]
-            else x["Username"]
-        ),
-        axis=1,
-    )
-    input_df.drop("is_duplicate", axis=1, inplace=True)
-
-    # write input_df to outuput.txt
+    # write input_df to output.txt
     input_df.to_csv("output_file.txt", header=False, index=False, sep=":")
 
     # print report
