@@ -4,6 +4,7 @@ import subprocess
 import sys
 from datetime import datetime
 from fpdf import FPDF
+from pathlib import Path
 
 # retrieve arguments
 script, test_data = sys.argv[1:]
@@ -135,6 +136,22 @@ with open(test_data) as file:
                             border=0,
                             new_x="LEFT",
                         )
+                case "END":
+                    # Confirm end of report
+                    pdf.set_font(family="Ubuntu", style="B", size=10)
+                    pdf.set_text_color(150, 150, 150)
+                    line_height = 6
+                    pdf.set_line_width(0.25)
+                    pdf.cell(
+                        w=190,
+                        h=line_height,
+                        text="END OF TEST REPORT",
+                        align="R",
+                        border="T",
+                        new_x="LEFT",
+                        new_y="NEXT",
+                        markdown=False,
+                    )
                 case _:
                     # write line to pdf
                     line = line.replace(">>script<<", script)
@@ -184,4 +201,6 @@ with open(test_data) as file:
                     with open(input_file, "a") as in_file:
                         in_file.write(line)
 # save pdf output
-pdf.output("test/ugen_test_report.pdf")
+script_stem = Path(script).stem
+output_filepath = f"test/{script_stem}_test_report.pdf"
+pdf.output(output_filepath)

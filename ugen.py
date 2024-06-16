@@ -45,9 +45,10 @@ def split_line(line):
     return line
 
 
+# function to validate input data
 def validate_line(line, i, filename, wrong_format, skipped_lines):
     valid_line = ""
-    # check if the separator was correct and there is 5 values in list
+    # check if the separator is correct and there is 5 values in list
     if len(line) != 5:
         wrong_format.append(
             f"{FormatCli.BOLD}{FormatCli.RED}ERR:{FormatCli.END} {filename}, line {i}: Wrong format of data. "
@@ -67,7 +68,7 @@ def validate_line(line, i, filename, wrong_format, skipped_lines):
         # check if ID is int
         try:
             int(line[0])
-
+            # all tests passed
             valid_line = line
         except ValueError:
             wrong_format.append(
@@ -94,7 +95,7 @@ def create_dataframe(input_data):
     return input_df
 
 
-# custom function to add a number at the end of duplicate username
+# function to add a number at the end of duplicate username
 def add_number(username, counts):
     if username in counts:
         counts[username] += 1
@@ -104,6 +105,7 @@ def add_number(username, counts):
         return username
 
 
+# function to generate username based on input data
 def generate_username(input_df):
     # create Username column
     input_df.insert(
@@ -135,29 +137,31 @@ def generate_username(input_df):
     return input_df
 
 
-# Create argument parser
-ap = CustomArgumentParser(
-    prog="ugen.py",
-    description="Generate list of usernames in single output file based on user info from one or more input files.",
-)
-ap.add_argument(
-    "inputFiles",
-    help="filename(s) of user info file(s)",
-    metavar="INPUT FILE(S)",
-    nargs="+",
-    type=argparse.FileType("r"),
-)
-ap.add_argument(
-    "-o",
-    "--output",
-    help="specify the name of the output file",
-    metavar="OUTPUT FILE",
-    type=argparse.FileType("w"),
-    required=True,
-)
+# function to get arguments from command line
+def get_arguments():
+    # Create argument parser
+    ap = CustomArgumentParser(
+        prog="ugen.py",
+        description="Generate list of usernames in single output file based on user info from one or more input files.",
+    )
+    ap.add_argument(
+        "inputFiles",
+        help="filename(s) of user info file(s)",
+        metavar="INPUT FILE(S)",
+        nargs="+",
+        type=argparse.FileType("r"),
+    )
+    ap.add_argument(
+        "-o",
+        "--output",
+        help="specify the name of the output file",
+        metavar="OUTPUT FILE",
+        type=argparse.FileType("w"),
+        required=True,
+    )
 
-# retrieve arguments
-args = ap.parse_args()
+    # retrieve arguments
+    return ap.parse_args()
 
 
 def main() -> None:
@@ -170,6 +174,9 @@ def main() -> None:
     processed_lines = 0
     skipped_lines = 0
 
+    # get arguments
+    args = get_arguments()
+
     # load input files into list of lists
     for file in args.inputFiles:
         i = 1
@@ -177,7 +184,7 @@ def main() -> None:
             line = strip_line(line)
             # spilt line into list
             line = split_line(line)
-
+            # validate line
             valid_line, i, wrong_format, skipped_lines = validate_line(
                 line, i, file.name, wrong_format, skipped_lines
             )

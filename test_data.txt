@@ -33,7 +33,7 @@ Running script with __-h__ or __- -help__ flag will display help.
 If required arguments are missing or incorrect (wrong filepath, missing input file...) it will display error and help and exit.
 
 H2
-Case 1
+Test case 1
 P
 **Running script without arguments.**
 
@@ -50,7 +50,7 @@ CLI
 OUTPUT
 
 H2
-Case 2
+Test case 2
 P
 **Running script with valid arguments and correctly formatted input files.**
 
@@ -78,7 +78,7 @@ P
 FILE
 
 H2
-Case 3
+Test case 3
 P
 **Script is handling length of usernames (8 chars) and duplicate usernames (adding number to username).**
 
@@ -106,7 +106,7 @@ P
 FILE
 
 H2
-Case 4
+Test case 4
 P
 **Providing ill-formatted data will result in only partial processing.**
 Possible format errors:
@@ -147,7 +147,7 @@ P
 FILE
 
 H2
-Case 5
+Test case 5
 P
 **If incorrect data is provided, nothing is processed.**
 
@@ -176,3 +176,5 @@ OUTPUT
 P
 **__Output file content:__**
 FILE
+
+END
