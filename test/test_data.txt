@@ -9,7 +9,7 @@ DATE
 
 **Command line tool for generating usernames. Input data are provided from one or more formatted input files. Processed data are formatted and stored in specified output file.**
 
-**Disclaimer:** For using test.py, please set __usecase__ variable to "test" in __FormatCli__ class (>>script<<: line 18) for correct formatting of CLI output in this report file. For use in production, set the __usecase__ variable to "production". If set to "test" in production, script will work as intended, only CLI output will be less fancy. :)
+**Disclaimer:** For using test.py, please set __usage__ variable to "test" in __FormatCli__ class (>>script<<: line 18) for correct formatting of CLI output in this report file. For use in production, set the __usecase__ variable to "production". If set to "test" in production, script will work as intended, only CLI output will be less fancy. :)
 
 **Usage:** Input files must be named __input_file1.txt__, __input_file2.txt__, ... __input_fileN.txt__ encoded in utf-8.
 Format of the data is __ID, Forename, Middle Name (optional), Surname, Department__ separated by colon.
@@ -148,6 +148,151 @@ FILE
 
 H2
 Test case 5
+P
+**Testing possible format errors one by one.**
+
+**1. Wrong number of values in line**
+
+**__Input file content:__**
+INPUT
+1234:Miloslav:Hurban:Legal
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+P
+**2. Using different separator**
+
+**__Input file content:__**
+INPUT
+7890,Milan,Rastislav,Stefanik,Defence
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+P
+**3. ID is not a number
+**__Input file content:__**
+INPUT
+abcd:Milan:Rastislav:Stefanik:Defence
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+P
+**4. Missing Forename**
+**__Input file content:__**
+INPUT
+4563:::Murgas:Development
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+P
+**5. Missing Surname**
+**__Input file content:__**
+INPUT
+1111:Pista:::Sales
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+
+P
+**6. Missing Deaprtment**
+**__Input file content:__**
+INPUT
+4563:Pista::Hufnagel:
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+H2
+Test case 6
 P
 **If incorrect data is provided, nothing is processed.**
 

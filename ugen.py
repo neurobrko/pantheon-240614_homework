@@ -16,9 +16,9 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 # create class for formatting report output
 class FormatCli:
-    usecase = "test"
-    # usecase = "production"
-    match usecase:
+    # usage = "test"
+    usage = "production"
+    match usage:
         case "production":
             GREEN = "\033[92m"
             YELLOW = "\033[93m"
