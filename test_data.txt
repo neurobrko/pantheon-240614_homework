@@ -1,40 +1,178 @@
 PDF
+HEAD
 H1
-TEST REPORT - ugen.py
+>>script<<
 P
-ugen.py is a script for generating usernames from user data provided in input files.
-Input files must be named input_file1.txt, input_file2.txt, ... input_fileN.txt encoded in utf-8.
-Format of the data is ID, Forename, Middle Name (optional), Surname, Department separated by colon.
+**Client:** PANTHEON.tech
+**Author:** Marek Paulik
+DATE
 
-Example line:
+**Command line tool for generating usernames. Input data are provided from one or more formatted input files. Processed data are formatted and stored in specified output file.**
+
+**Disclaimer:** For using test.py, please set __usecase__ variable to "test" in __FormatCli__ class (>>script<<: line 18) for correct formatting of CLI output in this report file. For use in production, set the __usecase__ variable to "production". If set to "test" in production, script will work as intended, only CLI output will be less fancy. :)
+
+**Usage:** Input files must be named __input_file1.txt__, __input_file2.txt__, ... __input_fileN.txt__ encoded in utf-8.
+Format of the data is __ID, Forename, Middle Name (optional), Surname, Department__ separated by colon.
+
+**__Example input data line:__**
 CLI
 1234:Jozef:Miloslav:Hurban:Legal
 P
 
-Script is validating input data. If ID is not an integer, if Forename or Surname is missing, it will skip the line and report after running.
-If Department is missing, script will process the line, but also report it after running.
+Script is validating input data. If __ID__ is not an integer, if __Forename__ or __Surname__ is missing, it will skip the line and report it after running.
+If __Department__ is missing, script will process the line, but also report it after running.
 
-To run the script you have to provide output file using -o or --output flag and input file(s) using positional arguments.
+To run the script you have to provide output file using __-o__ or __- -output__ flag and input file(s) using positional arguments.
 
-Example command:
+**__Example CLI command:__**
 CLI
-python3 ugen.py -o output_file.txt input_file1.txt input_file2.txt input_file3.txt
+python3 >>script<< -o output_file.txt input_file1.txt input_file2.txt input_file3.txt
 P
 
-Running script with -h or --help flag will display help.
+Running script with __-h__ or __- -help__ flag will display help.
 If required arguments are missing or incorrect (wrong filepath, missing input file...) it will display error and help and exit.
 
 H2
-EXAMPLE 1: Running script without arguments
+Case 1
 P
-Command:
+**Running script without arguments.**
+
+**__CLI command:__**
 CLI
-python3 ugen.py
+python3 >>script<<
 
 CMD
-python3 ugen.py
+python3 >>script<<
 PDF
 P
-Output:
+**__CLI Output:__**
 CLI
 OUTPUT
+
+H2
+Case 2
+P
+**Running script with valid arguments and correctly formatted input files.**
+
+**__Input file content:__**
+INPUT
+1234:Jozef:Miloslav:Hurban:Legal
+4567:Milan:Rastislav:Stefanik:Defence
+4563:Jozef::Murgas:Development
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+H2
+Case 3
+P
+**Script is handling length of usernames (8 chars) and duplicate usernames (adding number to username).**
+
+**__Input file content:__**
+INPUT
+4567:Milan:Rastislav:Stefanik:Defence
+1111:Pista::Hufnagel:Sales
+4563:Pista::Hufnagel:Sales
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+H2
+Case 4
+P
+**Providing ill-formatted data will result in only partial processing.**
+Possible format errors:
+(Lines in input file are corresponding to list below.)
+- wrong number of values in line
+- using different separator
+- ID is not a number
+- missing Forename
+- missing Surname
+- missing Department
+(Last line is correctly formatted)
+
+**__Input file content:__**
+INPUT
+1234:Miloslav:Hurban:Legal
+7890,Milan,Rastislav,Stefanik,Defence
+abcd:Milan:Rastislav:Stefanik:Defence
+4563:::Murgas:Development
+1111:Pista:::Sales
+4563:Pista::Hufnagel:
+7890:Milan:Rastislav:Stefanik:Defence
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE
+
+H2
+Case 5
+P
+**If incorrect data is provided, nothing is processed.**
+
+**__Input file content:__**
+INPUT
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor enim ac velit ultrices euismod. Praesent felis nisi, tempor ac posuere eu, interdum a magna. Quisque gravida at felis ut viverra. Vestibulum eget dignissim lorem,
+vel viverra nisi. Proin est risus, blandit at arcu vel, rutrum pellentesque nulla. Aenean accumsan elit libero. Donec ut auctor nisl. Aenean faucibus nisi sapien, in placerat nulla cursus eget. Nullam euismod massa vitae dapibus tincidunt.
+Sed porttitor
+fermentum
+blandit.
+Praesent aliquet mi vulputate augue pharetra commodo. Maecenas lacus tortor, tristique sit amet pretium in, fermentum quis augue. Proin efficitur venenatis ligula ac mattis.
+PDF
+
+P
+**__CLI command:__**
+CLI
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+
+CMD
+python3 >>script<< -o test/test_output.txt test/test_input.txt
+PDF
+P
+**__CLI Output:__**
+CLI
+OUTPUT
+P
+**__Output file content:__**
+FILE

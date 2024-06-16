@@ -16,11 +16,21 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 # create class for formatting report output
 class FormatCli:
-    GREEN = "\033[92m"
-    YELLOW = "\033[93m"
-    RED = "\033[91m"
-    BOLD = "\033[1m"
-    END = "\033[0m"
+    usecase = "test"
+    # usecase = "production"
+    match usecase:
+        case "production":
+            GREEN = "\033[92m"
+            YELLOW = "\033[93m"
+            RED = "\033[91m"
+            BOLD = "\033[1m"
+            END = "\033[0m"
+        case "test":
+            GREEN = ""
+            YELLOW = ""
+            RED = ""
+            BOLD = ""
+            END = ""
 
 
 # function to strip lines of \n or eventual whitespace
@@ -128,21 +138,22 @@ def generate_username(input_df):
 # Create argument parser
 ap = CustomArgumentParser(
     prog="ugen.py",
-    description="Generate list of usernames in single output file based on user info from multiple input files.",
+    description="Generate list of usernames in single output file based on user info from one or more input files.",
 )
 ap.add_argument(
     "inputFiles",
     help="filename(s) of user info file(s)",
-    metavar="FILEPATH",
+    metavar="INPUT FILE(S)",
     nargs="+",
     type=argparse.FileType("r"),
 )
 ap.add_argument(
     "-o",
     "--output",
-    help="Specify the name of the output file.",
-    metavar="PATH",
+    help="specify the name of the output file",
+    metavar="OUTPUT FILE",
     type=argparse.FileType("w"),
+    required=True,
 )
 
 # retrieve arguments
